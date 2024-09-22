@@ -26,6 +26,8 @@ function onInit() {
 
   createAliens(gBoard)
   createHero(gBoard)
+  //   moveAliens(gBoard, gAliensTopRowIdx,gAliensBottomRowIdx)
+  gIntervalAliens = setInterval(moveAliens, 1000)
 
   renderBoard(gBoard)
 }
@@ -56,8 +58,8 @@ function renderBoard(board) {
 
       if (currCell.type === SKY) cellClass += ' sky'
       if (currCell.type === WALL) cellClass += ' wall'
-      if(currCell.gameObject === LASER) cellClass += ' laser'
-      if(currCell.gameObject === ALIEN) cellClass += ' alien'
+      if (currCell.gameObject === LASER) cellClass += ' laser'
+      if (currCell.gameObject === ALIEN) cellClass += ' alien'
 
       if (currCell.gameObject === ALIEN) gGame.alienCount++
       strHtml += `<td class="cell cell-${i}-${j} ${cellClass}" data-i="${i}" data-j="${j}" cell>${cellContent} </td>`
