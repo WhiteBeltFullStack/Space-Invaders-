@@ -1,0 +1,30 @@
+body {
+  text-align: center;
+  margin: 0;
+  background-color: lightgrey;
+}
+table {
+  margin: 0 auto;
+  border-collapse: collapse;
+  width: 100%;
+}
+td {
+  margin: 0 auto;
+  padding: 3px;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+
+  width: 20px;
+  height: 20px;
+}
+
+.sky {
+  background-color: lightblue;
+}
+
+.wall {
+  background-color: rgb(0, 0, 0);
+}
+
+div,.aliens-counter{
+    font-size: 20px;
+}
