@@ -4,14 +4,35 @@ const BOARD_SIZE = 15
 const ALIEN_ROW_LENGTH = 8
 const ALIEN_ROW_COUNT = 3
 
-const HERO = '♆'
-const ALIEN = '👽'
-const LASER = '⤊'
+const HERO = 'hero'
+const ALIEN = 'alien'
+const LASER = 'laser'
+const NEG_LASER = 'neg laser'
+const SUPER_LAZER = 'super laser'
+const BEAN = 'BEAN'
+
+const HERO_IMG = '<img src="imgs/hero.jpg"/>'
+const ALIEN_IMG = '<img src="imgs/alien.jpg"/>'
+const LASER_IMG = '<img src="imgs/laser.jpg"/>'
+const NEG_LASER_IMG = '<img src="imgs/neg-lazer.jpg"/>'
+const SUPER_LAZER_IMG = '<img src="imgs/super-lazer.jpg"/>'
+const BEAN_IMG = '<img src="imgs/senzu-bean.jpg"/>'
 
 const SKY = 'SKY'
 const WALL = 'WALL'
 
+const START_GAME_AUDIO = 'audio/start-game.mp3'
+
+const STEP_AUDIO = 'audio/step.mp3'
+const LAZER_AUDIO = 'audio/regular-shot.mp3'
+const LAZER_NEG_AUDIO = 'audio/neg-hit.mp3'
+const SUPER_LAZER_AUDIO = 'audio/speed-shot.mp3'
+const KILL_AUDIO = 'audio/kill.mp3'
+
 var gGameWin = true
+
+var gSpeedAttackCount
+var gGroupAttack
 
 var gBoard
 var gGame = {
@@ -19,15 +40,26 @@ var gGame = {
   alienCount: 0,
 }
 
+var gBeansInterval
 function onInit() {
+  const elRestart = document.querySelector('.restart')
+  elRestart.style.display = 'none'
+  playSound(START_GAME_AUDIO, 0.1)
+
   gBoard = createBoard()
   gGame.isOn = true
   gGame.alienCount = 0
+  gSpeedAttackCount = 3
+  gGroupAttack = 2
 
   createAliens(gBoard)
+  var elAlienAlive = document.querySelector('.aliens-counter')
+  elAlienAlive.innerText = gGame.alienCount
+
   createHero(gBoard)
-  //   moveAliens(gBoard, gAliensTopRowIdx,gAliensBottomRowIdx)
-  gIntervalAliens = setInterval(moveAliens, 1000)
+  gIntervalAliens = setInterval(moveAliens, ALIEN_SPEED)
+
+  gBeansInterval = setInterval(placeSpecialFood, 5000)
 
   renderBoard(gBoard)
 }
@@ -60,9 +92,34 @@ function renderBoard(board) {
       if (currCell.type === WALL) cellClass += ' wall'
       if (currCell.gameObject === LASER) cellClass += ' laser'
       if (currCell.gameObject === ALIEN) cellClass += ' alien'
+      if (currCell.gameObject === HERO) cellClass += ' hero'
 
-      if (currCell.gameObject === ALIEN) gGame.alienCount++
-      strHtml += `<td class="cell cell-${i}-${j} ${cellClass}" data-i="${i}" data-j="${j}" cell>${cellContent} </td>`
+      strHtml += `<td class="cell cell-${i}-${j} ${cellClass}" data-i="${i}" data-j="${j}">
+      
+      `
+
+      if (currCell.gameObject === HERO) {
+        strHtml += HERO_IMG
+      }
+      if (currCell.gameObject === ALIEN) {
+        strHtml += ALIEN_IMG
+      }
+
+      if (currCell.gameObject === LASER) {
+        strHtml += LASER_IMG
+      }
+      if (currCell.gameObject === NEG_LASER) {
+        strHtml += NEG_LASER_IMG
+      }
+      if (currCell.gameObject === SUPER_LAZER) {
+        strHtml += SUPER_LAZER_IMG
+      }
+
+      if (currCell.gameObject === BEAN) {
+        strHtml += BEAN_IMG
+      }
+
+      strHtml += `</td>`
     }
     strHtml += `</tr>`
   }
@@ -88,9 +145,57 @@ function getElCell(pos) {
   return elCell
 }
 
-// function renderCell(pos, value) {
-//   const elCell = getElCell(pos)
-//   elCell.innerHTML = value
-// }
+function gameOver(gGameWin) {
+  const elRestart = document.querySelector('.restart')
+  elRestart.style.display = 'inline'
 
-function gameOver(gGameWin) {}
+  if (gGameWin) {
+    gGame.isOn = false
+
+    var elAlienAlive = document.querySelector('.aliens-counter')
+    elAlienAlive.innerText = 'YOU WIN'
+  } else {
+    gGame.isOn = false
+    var elAlienAlive = document.querySelector('.aliens-counter')
+    elAlienAlive.innerText = 'YOU LOST'
+  }
+}
+
+function onRestartGame() {
+  clearInterval(gIntervalAliens)
+  onInit()
+}
+
+function playSound(audio, volume) {
+  var newAudio = new Audio(audio)
+  newAudio.volume = volume
+  newAudio.play()
+}
+
+function specialFood() {
+  var freeBeanPoss = []
+  for (var j = 1; j < gBoard[13].length - 2; j++) {
+    var currPos = { i: 13, j: j }
+    if (gBoard[currPos.i][currPos.j].gameObject === null) {
+      freeBeanPoss.push(currPos)
+    }
+  }
+  return freeBeanPoss
+}
+
+function placeSpecialFood() {
+  const poss = specialFood()
+  if (!poss) return
+
+  var idx = getRandomInt(0, poss.length)
+
+  gBoard[poss[idx].i][poss[idx].j].gameObject = BEAN
+
+  updateCell(poss[idx], BEAN)
+
+  //   setTimeout(() => {
+  //     gBoard[poss[idx].i][poss[idx].j].gameObject = null;
+  //     updateCell(poss[idx]);
+  // }, 5000);
+  renderBoard(gBoard)
+}

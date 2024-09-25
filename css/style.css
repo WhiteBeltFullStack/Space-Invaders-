@@ -1,30 +1,118 @@
-body {
-  text-align: center;
+* {
   margin: 0;
-  background-color: lightgrey;
+  padding: 0;
+  box-sizing: border-box;
 }
-table {
-  margin: 0 auto;
+
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background-color: #222931;
+  color: #ffffff;
+  font-family: 'Arial', sans-serif;
+
+  background-image: url('/imgs/game-background.jpg');
+}
+
+p{
+    border:1px solid lime;
+    margin:8px;
+    margin-left: 0px;
+}
+
+.cell img {
+  width: 30px;
+  height: 30px;
+}
+
+.container {
+  text-align: center;
+}
+
+h1,.aliens-left {
+    margin-inline: 30%;
+    background-color: black;
+    color: lime;
+    font-size: 16px;
+    border: 2px solid lime;
+    padding: 10px 20px;
+    text-transform: uppercase;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+
+h1:hover,.aliens-left:hover {
+    background-color: lime;
+    color: black;
+}
+
+.instructions{
+    margin-inline: 20%;
+    background-color: black;
+    color: lime;
+    font-size: 16px;
+    border: 2px solid lime;
+    padding: 10px 20px;
+    text-transform: uppercase;
+    transition: background-color 0.3s, color 0.3s;
+  }
+
+.board {
   border-collapse: collapse;
+  margin: 20px 0;
   width: 100%;
 }
-td {
-  margin: 0 auto;
-  padding: 3px;
-  border: 1px solid rgba(0, 0, 0, 0.2);
 
-  width: 20px;
-  height: 20px;
+.cell {
+  width: 50px;
+  height: 40px;
+  text-align: center;
+  font-size: 2rem;
+  border: 1px solid #ffffff;
 }
 
 .sky {
-  background-color: lightblue;
+  background-color: #005f8d;
 }
 
 .wall {
-  background-color: rgb(0, 0, 0);
+  background-color: #000000;
+  border: 1px solid lime;
 }
 
-div,.aliens-counter{
-    font-size: 20px;
+.alien {
+  background-color: #00ff00;
+  border: 1px black solid;
+  opacity: 1;
+}
+
+
+
+.laser {
+  color: #ff0000;
+}
+
+.aliens-counter {
+  font-size: 1.5rem;
+  color: #ffcc00;
+}
+
+button.restart {
+  background-color: black;
+  color: lime;
+  font-size: 16px;
+  border: 2px solid lime;
+  padding: 10px 20px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+  display: none;
+}
+
+button.restart:hover {
+  background-color: lime;
+  color: black;
 }

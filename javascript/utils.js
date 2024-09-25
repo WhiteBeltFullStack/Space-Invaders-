@@ -7,12 +7,25 @@ function countNegs(board, rowIdx, colIdx) {
     if (i < 0 || i >= board.length) continue
     for (var j = colIdx - 1; j <= colIdx + 1; j++) {
       if (j < 0 || j >= board[0].length) continue
-      if (i === rowIdx && j === colIdx) continue
+      //   if (i === rowIdx && j === colIdx) continue
       var currCell = board[i][j]
-      if (currCell === something) negCount++
+      var currLoc = { i: i, j: j }
+      if (currCell.gameObject === ALIEN) {
+        clearInterval(gLazerInterval)
+        gHero.isShoot = false
+
+        negCount++
+
+        currCell.gameObject = null
+        updateCell(currLoc)
+      }
     }
   }
-  return negCount
+  gGame.alienCount -= negCount
+  if (gGame.alienCount === 0) {
+    gGameWin = true
+    gameOver(gGameWin)
+  }
 }
 
 function getRandomColor() {
@@ -26,15 +39,14 @@ function getRandomInt(min, max) {
   return Math.floor(Math.random() * (maxFloored - minCeiled) + minCeiled) // The maximum is exclusive and the minimum is inclusive
 }
 
-
 function makeId(length = 6) {
-    var txt = ''
-    var possible =
-      'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
-  
-    for (var i = 0; i < length; i++) {
-      txt += possible.charAt(Math.floor(Math.random() * possible.length))
-    }
-  
-    return txt
+  var txt = ''
+  var possible =
+    'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+
+  for (var i = 0; i < length; i++) {
+    txt += possible.charAt(Math.floor(Math.random() * possible.length))
   }
+
+  return txt
+}

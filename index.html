@@ -7,15 +7,25 @@
     <link rel="stylesheet" href="css/style.css" />
   </head>
   <body onload="onInit()" onkeyup="onHandleKeyUp(event)">
-    <h1>Space Invaders</h1>
-
-    <table class="board">
-      <div>Aliens Left : <span class="aliens-counter">24</span></div>
-    </table>
-
-    <script src="javascript/utils.js"></script>
-    <script src="javascript/game.js"></script>
-    <script src="javascript/player.js"></script>
-    <script src="javascript/aliens.js"></script>
+    <div class="container">
+        <h1>Space Invaders</h1>
+        <div class="aliens-left">Aliens Left : <span class="aliens-counter">24</span></div>
+        <div class="instructions">INSTRUCTIONS:
+            <p>---"Right and Left"--- Arrow to move around</p>
+            
+            <p>---Space-Bar---  Limittles Shooting</p>
+            <p>---X----  Ultra Speed Attack!--x3</p>
+            <p>---N---  Lets Blow everyone Around!--x2</p>
+        </div>
+        
+        <table class="board">
+        </table>
+        <button class="restart" onclick="onRestartGame()">Restart - Game</button>
+        
+    </div>
+        <script src="javascript/utils.js"></script>
+        <script src="javascript/game.js"></script>
+        <script src="javascript/player.js"></script>
+        <script src="javascript/aliens.js"></script>
   </body>
 </html>

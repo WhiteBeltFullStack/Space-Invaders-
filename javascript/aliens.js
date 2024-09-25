@@ -2,65 +2,105 @@
 
 const ALIEN_SPEED = 500
 var gIntervalAliens
-
 var gAliensTopRowIdx = 1
 var gAliensBottomRowIdx = 3
+var gIsAlienFreeze = false
 
-var gIsAlienFreeze = true
+var gIsRight = true
+var gGoDown
 
 function createAliens(board) {
   for (var i = 1; i <= ALIEN_ROW_COUNT; i++) {
     for (var j = 1; j <= ALIEN_ROW_LENGTH; j++) {
       board[i][j] = createCell(SKY, ALIEN)
+      gGame.alienCount++
     }
   }
 }
 
-function handleAlientHit(pos) {}
-
-// function shiftBoardRight(board, fromI, toI) {
-//   for (var i = toI; i >= fromI; i--) {
-//     for (var j = board[i].length - 1; j > 0; j--) {
-//       if (board[i][j - 1].gameObject === ALIEN) {
-//         if (j < board[i].length - 1 && board[i][j].type !== WALL) {
-//           board[i][j].gameObject = ALIEN
-//           updateCell({ i: i, j: j }, ALIEN)
-
-//           // Clear the left cell
-//           board[i][j - 1].gameObject = null
-//           updateCell({ i: i, j: j - 1 }, null)
-//         }
-//       }
-//     }
-//   }
-// }
-
-function shiftBoardLeft(board, fromI, toI) {}
-function shiftBoardDown(board, fromI, toI) {}
-
-function moveAliens(board, fromI, toI) {
-  //   shiftBoardRight(board, fromI, toI)
-  //   shiftBoardDown(board, fromI, toI)
-  //   shiftBoardLeft(board, fromI, toI)
-
-  moveAliensToRight()
-
+function moveAliens() {
+  if (gIsAlienFreeze) return
+  if (gGoDown) {
+    moveAliensDown()
+    gGoDown = false
+  } else {
+    if (gIsRight) {
+      moveAliensRight()
+    } else {
+      moveAliensLeft()
+    }
+  }
   renderBoard(gBoard)
 }
 
-function moveAliensToRight() {
+function moveAliensDown() {
   for (var i = gBoard.length - 1; i >= 0; i--) {
     for (var j = gBoard[i].length - 1; j >= 0; j--) {
       if (gBoard[i][j].gameObject === ALIEN) {
+        const currPos = { i: i, j: j }
+        const newPos = { i: i + 1, j: j }
+        if (newPos.i === gBoard.length - 2) {
+          clearInterval(gIntervalAliens)
+          gGame.isOn = false
+          gGameWin = false
+          gameOver(gGameWin)
+          return
+        }
+
+        if (
+          newPos.i < gBoard.length &&
+          gBoard[newPos.i][newPos.j].type !== WALL
+        ) {
+          if (
+            gBoard[newPos.i][newPos.j].gameObject === LASER ||
+            gBoard[newPos.i][newPos.j].gameObject === NEG_LASER ||
+            gBoard[newPos.i][newPos.j].gameObject === SUPER_LAZER
+          ) {
+            gBoard[newPos.i][newPos.j].gameObject = null
+            updateCell(newPos)
+            alientHit(i, j, newPos)
+          } else {
+            gBoard[newPos.i][newPos.j].gameObject = ALIEN
+            updateCell(newPos, ALIEN)
+
+            gBoard[i][j].gameObject = null
+            updateCell(currPos)
+          }
+        }
+      }
+    }
+  }
+}
+
+function moveAliensRight() {
+  //   for (var i = gBoard.length - 1; i >= 0; i--) {
+  //     for (var j = gBoard[i].length - 1; j >= 0; j--) {
+  for (var j = gBoard.length - 1; j >= 0; j--) {
+    for (var i = gBoard[j].length - 1; i >= 0; i--) {
+      if (gBoard[i][j].gameObject === ALIEN) {
+        const currPos = { i: i, j: j }
         const newPos = { i: i, j: j + 1 }
         if (
           newPos.j < gBoard[i].length &&
           gBoard[newPos.i][newPos.j].type !== WALL
         ) {
-          gBoard[newPos.i][newPos.j].gameObject = ALIEN
+          if (
+            gBoard[newPos.i][newPos.j].gameObject === LASER ||
+            gBoard[newPos.i][newPos.j].gameObject === NEG_LASER ||
+            gBoard[newPos.i][newPos.j].gameObject === SUPER_LAZER
+          ) {
+            gBoard[newPos.i][newPos.j].gameObject = null
+            updateCell(newPos)
+            alientHit(i, j, newPos)
+          }
           gBoard[i][j].gameObject = null
+          updateCell(currPos)
+
+          gBoard[newPos.i][newPos.j].gameObject = ALIEN
+          updateCell(newPos, ALIEN)
         } else if (gBoard[newPos.i][newPos.j].type === WALL) {
-          moveAliensDown()
+          gGoDown = true
+          gIsRight = !gIsRight
           return
         }
       }
@@ -68,15 +108,35 @@ function moveAliensToRight() {
   }
 }
 
-function moveAliensDown() {
-  for (var i = gBoard.length - 1; i >= 0; i--) {
-    for (var j = gBoard[i].length - 1; j >= 0; j--) {
+function moveAliensLeft() {
+  // for (var i = gBoard.length - 1; i >= 0; i--) {
+  //   for (var j = 0; j < gBoard[i].length; j++) {
+  for (var j = 0; j < gBoard.length; j++) {
+    for (var i = gBoard[j].length - 1; i >= 0; i--) {
       if (gBoard[i][j].gameObject === ALIEN) {
-        const newPos = { i: i + 1, j: j }
-        
+        const currPos = { i: i, j: j }
+        const newPos = { i: i, j: j - 1 }
+        if (newPos.j >= 0 && gBoard[newPos.i][newPos.j].type !== WALL) {
+          if (
+            gBoard[newPos.i][newPos.j].gameObject === LASER ||
+            gBoard[newPos.i][newPos.j].gameObject === NEG_LASER ||
+            gBoard[newPos.i][newPos.j].gameObject === SUPER_LAZER
+          ) {
+            gBoard[newPos.i][newPos.j].gameObject = null
+            updateCell(newPos)
+            alientHit(i, j, newPos)
+          }
+          gBoard[i][j].gameObject = null
+          updateCell(currPos)
+
+          gBoard[newPos.i][newPos.j].gameObject = ALIEN
+          updateCell(newPos, ALIEN)
+        } else if (gBoard[newPos.i][newPos.j].type === WALL) {
+          gGoDown = true
+          gIsRight = !gIsRight
+          return
+        }
       }
     }
   }
 }
-
-function moveAliensLeft() {}
