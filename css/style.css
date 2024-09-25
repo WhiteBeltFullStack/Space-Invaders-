@@ -14,7 +14,7 @@ body {
   color: #ffffff;
   font-family: 'Arial', sans-serif;
 
-  background-image: url('/imgs/game-background.jpg');
+  background-image: url('imgs/game-background.jpg');
 }
 
 p{
