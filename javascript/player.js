@@ -46,14 +46,14 @@ function moveHero(dir) {
 }
 
 function onHandleKeyUp(event) {
-  console.log('event.key:',event.key)
+  console.log('event.key:', event.key)
   if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
     onKeyDown(event)
   } else if (event.code === 'Space') {
     onShoot(event.key)
-  } else if (event.key === 'n') {
+  } else if (event.key === 'n' || event.key === 'т' || event.key === 'מ') {
     clearAreaShot(event.key)
-  } else if (event.key === 'x') {
+  } else if (event.key === 'x' || event.key === 'ס' || event.key === 'ч') {
     speedAtack(event.key)
   }
   return event.key
@@ -109,7 +109,10 @@ function blinkLaser(pos, eventKey) {
   var wepeon
   var wepeonImg
 
-  var currSpeed = eventKey !== 'x' ? baseSpeed : speedySpeed
+  var currSpeed =
+    eventKey !== 'x' && eventKey !== 'ч' && eventKey !== 'ס'
+      ? baseSpeed
+      : speedySpeed
 
   gLazerInterval = setInterval(() => {
     const nextLocation = {
@@ -148,10 +151,10 @@ function blinkLaser(pos, eventKey) {
     if (eventKey === ' ') {
       wepeon = LASER
       wepeonImg = LASER_IMG
-    } else if (eventKey === 'n') {
+    } else if (eventKey === 'n' || eventKey === 'т' || eventKey === 'מ') {
       wepeon = NEG_LASER
       wepeonImg = NEG_LASER_IMG
-    } else if (eventKey === 'x') {
+    } else if (eventKey === 'x' || eventKey === 'ס' || eventKey === 'ч') {
       wepeon = SUPER_LAZER
       wepeonImg = SUPER_LAZER_IMG
     }
@@ -162,7 +165,6 @@ function blinkLaser(pos, eventKey) {
 }
 
 function alientHit(nextI, nextJ, nextLocation, eventKey) {
-  
   if (eventKey === ' ') {
     const cell = gBoard[nextI][nextJ]
     if (cell.gameObject === ALIEN) {
@@ -192,7 +194,7 @@ function alientHit(nextI, nextJ, nextLocation, eventKey) {
 
   //NEIGHBOR SHOT
 
-  if (eventKey === 'n') {
+  if (eventKey === 'n' || eventKey === 'т' || eventKey === 'מ') {
     playSound(LAZER_NEG_AUDIO, 0.1)
     countNegs(gBoard, nextI, nextJ)
     var elAlienAlive = document.querySelector('.aliens-counter')
@@ -202,7 +204,7 @@ function alientHit(nextI, nextJ, nextLocation, eventKey) {
 
   //QUICK SHOT
 
-  if (eventKey === 'x') {
+  if (eventKey === 'x' || eventKey === 'ס' || eventKey === 'ч') {
     const cell = gBoard[nextI][nextJ]
     if (cell.gameObject === ALIEN) {
       clearInterval(gLazerInterval)
@@ -235,11 +237,18 @@ function forceEnd() {
   var counter = 0
   for (var i = 0; i < gBoard.length; i++) {
     for (var j = 0; j < gBoard[i].length; j++) {
-      if (gBoard[i][j].gameObject === ALIEN) counter++
-
+      if (gBoard[i][j].gameObject === ALIEN) {
+        counter++
+      }
       var elAlienAlive = document.querySelector('.aliens-counter')
       elAlienAlive.innerText = counter
       gGame.alienCount = counter
     }
+  }
+
+  if (counter === 0) {
+    console.log('counter:', counter)
+    gGameWin = true
+    gameOver(gGameWin)
   }
 }
