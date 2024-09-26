@@ -23,6 +23,17 @@ function moveHero(dir) {
 
   if (nextCell.type === WALL) return
 
+  if (nextCell.gameObject === BEAN) {
+    const elScore = document.querySelector('.score')
+    gGame.score += 50
+    elScore.innerText = gGame.score
+
+    gIsAlienFreeze = true
+    setTimeout(() => {
+      gIsAlienFreeze = false
+    }, 1500)
+  }
+
   gBoard[gHero.pos.i][gHero.pos.j].gameObject = null
   updateCell(gHero.pos)
 
@@ -116,6 +127,15 @@ function blinkLaser(pos, eventKey) {
       alientHit(nextLocation.i, nextLocation.j, nextLocation, eventKey)
       playSound(KILL_AUDIO, 0.1)
 
+      if (gGame.alienCount === 0) {
+        gGameWin = true
+
+        gameOver(gGameWin)
+      }
+
+      clearInterval(gLazerInterval)
+      gHero.isShoot = false
+
       return
     }
 
@@ -141,22 +161,30 @@ function blinkLaser(pos, eventKey) {
 }
 
 function alientHit(nextI, nextJ, nextLocation, eventKey) {
+  
   if (eventKey === ' ') {
     const cell = gBoard[nextI][nextJ]
     if (cell.gameObject === ALIEN) {
       clearInterval(gLazerInterval)
 
+      const elScore = document.querySelector('.score')
+      gGame.score += 10
+      elScore.innerText = gGame.score
+
       gHero.isShoot = false
       gBoard[nextI][nextJ].gameObject = null
+
       updateCell(nextLocation)
       gGame.alienCount--
-      if (gGame.alienCount === 0) {
-        gGameWin = true
-        gameOver(gGameWin)
-      }
 
       var elAlienAlive = document.querySelector('.aliens-counter')
       elAlienAlive.innerText = gGame.alienCount
+
+      if (gGame.alienCount === 0) {
+        gGameWin = true
+
+        gameOver(gGameWin)
+      }
     }
     renderBoard(gBoard)
   }
@@ -177,6 +205,11 @@ function alientHit(nextI, nextJ, nextLocation, eventKey) {
     const cell = gBoard[nextI][nextJ]
     if (cell.gameObject === ALIEN) {
       clearInterval(gLazerInterval)
+
+      const elScore = document.querySelector('.score')
+      gGame.score += 10
+      elScore.innerText = gGame.score
+
       gHero.isShoot = false
       gGame.alienCount--
 
@@ -188,9 +221,24 @@ function alientHit(nextI, nextJ, nextLocation, eventKey) {
 
       if (gGame.alienCount === 0) {
         gGameWin = true
+
         gameOver(gGameWin)
       }
     }
     renderBoard(gBoard)
+  }
+  forceEnd()
+}
+
+function forceEnd() {
+  var counter = 0
+  for (var i = 0; i < gBoard.length; i++) {
+    for (var j = 0; j < gBoard[i].length; j++) {
+      if (gBoard[i][j].gameObject === ALIEN) counter++
+
+      var elAlienAlive = document.querySelector('.aliens-counter')
+      elAlienAlive.innerText = counter
+      gGame.alienCount = counter
+    }
   }
 }

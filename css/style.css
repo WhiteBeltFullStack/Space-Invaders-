@@ -17,10 +17,10 @@ body {
   background-image: url('/imgs/game-background.jpg');
 }
 
-p{
-    border:1px solid lime;
-    margin:8px;
-    margin-left: 0px;
+p {
+  border: 1px solid lime;
+  margin: 8px;
+  margin-left: 0px;
 }
 
 .cell img {
@@ -32,33 +32,43 @@ p{
   text-align: center;
 }
 
-h1,.aliens-left {
-    margin-inline: 30%;
-    background-color: black;
-    color: lime;
-    font-size: 16px;
-    border: 2px solid lime;
-    padding: 10px 20px;
-    text-transform: uppercase;
-    transition: background-color 0.3s, color 0.3s;
+h1,
+.aliens-left {
+  margin-inline: 30%;
+  background-color: black;
+  color: lime;
+  font-size: 16px;
+  border: 2px solid lime;
+  padding: 10px 20px;
+  text-transform: uppercase;
+  transition: background-color 0.3s, color 0.3s;
 }
 
-
-h1:hover,.aliens-left:hover {
-    background-color: lime;
-    color: black;
+.score {
+  background-color: black;
+  color: lime;
+  font-size: 16px;
+  padding: 10px 20px;
+  text-transform: uppercase;
+  transition: background-color 0.3s, color 0.3s;
 }
 
-.instructions{
-    margin-inline: 20%;
-    background-color: black;
-    color: lime;
-    font-size: 16px;
-    border: 2px solid lime;
-    padding: 10px 20px;
-    text-transform: uppercase;
-    transition: background-color 0.3s, color 0.3s;
-  }
+h1:hover,
+.aliens-left:hover {
+  background-color: lime;
+  color: black;
+}
+
+.instructions {
+  margin-inline: 20%;
+  background-color: black;
+  color: lime;
+  font-size: 16px;
+  border: 2px solid lime;
+  padding: 10px 20px;
+  text-transform: uppercase;
+  transition: background-color 0.3s, color 0.3s;
+}
 
 .board {
   border-collapse: collapse;
@@ -89,13 +99,12 @@ h1:hover,.aliens-left:hover {
   opacity: 1;
 }
 
-
-
 .laser {
   color: #ff0000;
 }
 
-.aliens-counter {
+.aliens-counter,
+.score {
   font-size: 1.5rem;
   color: #ffcc00;
 }

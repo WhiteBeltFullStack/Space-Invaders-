@@ -40,10 +40,9 @@ function moveAliensDown() {
         const currPos = { i: i, j: j }
         const newPos = { i: i + 1, j: j }
         if (newPos.i === gBoard.length - 2) {
-          clearInterval(gIntervalAliens)
-          gGame.isOn = false
           gGameWin = false
           gameOver(gGameWin)
+          gGame.isOn = false
           return
         }
 
@@ -56,6 +55,7 @@ function moveAliensDown() {
             gBoard[newPos.i][newPos.j].gameObject === NEG_LASER ||
             gBoard[newPos.i][newPos.j].gameObject === SUPER_LAZER
           ) {
+            var shotType
             if (gBoard[newPos.i][newPos.j].gameObject === LASER) {
               shotType = ' '
             }
@@ -67,8 +67,7 @@ function moveAliensDown() {
             }
             gBoard[newPos.i][newPos.j].gameObject = null
             updateCell(newPos)
-            // alientHit(newPos.i, newPos.j, newPos, shotType)
-            continue
+            alientHit(newPos.i, newPos.j, newPos, shotType)
           } else {
             gBoard[newPos.i][newPos.j].gameObject = ALIEN
             updateCell(newPos, ALIEN)
@@ -92,7 +91,7 @@ function moveAliensRight() {
           newPos.j < gBoard[i].length &&
           gBoard[newPos.i][newPos.j].type !== WALL
         ) {
-          var shotEngage
+          var shotType
           if (
             gBoard[newPos.i][newPos.j].gameObject === LASER ||
             gBoard[newPos.i][newPos.j].gameObject === NEG_LASER ||
@@ -109,8 +108,7 @@ function moveAliensRight() {
             }
             gBoard[newPos.i][newPos.j].gameObject = null
             updateCell(newPos)
-            // alientHit(newPos.i, newPos.j, newPos, shotType)
-            continue
+            alientHit(newPos.i, newPos.j, newPos, shotType)
           }
           gBoard[i][j].gameObject = null
           updateCell(currPos)
@@ -139,6 +137,7 @@ function moveAliensLeft() {
             gBoard[newPos.i][newPos.j].gameObject === NEG_LASER ||
             gBoard[newPos.i][newPos.j].gameObject === SUPER_LAZER
           ) {
+            var shotType
             if (gBoard[newPos.i][newPos.j].gameObject === LASER) {
               shotType = ' '
             }
@@ -150,8 +149,7 @@ function moveAliensLeft() {
             }
             gBoard[newPos.i][newPos.j].gameObject = null
             updateCell(newPos)
-            // alientHit(newPos.i, newPos.j, newPos, shotType)
-            continue
+            alientHit(newPos.i, newPos.j, newPos, shotType)
           }
           gBoard[i][j].gameObject = null
           updateCell(currPos)

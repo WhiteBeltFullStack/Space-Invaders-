@@ -21,6 +21,11 @@ function countNegs(board, rowIdx, colIdx) {
       }
     }
   }
+
+  const elScore = document.querySelector('.score')
+  gGame.score += 10 * negCount
+  elScore.innerText = gGame.score
+
   gGame.alienCount -= negCount
   if (gGame.alienCount === 0) {
     gGameWin = true

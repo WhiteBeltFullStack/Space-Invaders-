@@ -29,7 +29,7 @@ const LAZER_NEG_AUDIO = 'audio/neg-hit.mp3'
 const SUPER_LAZER_AUDIO = 'audio/speed-shot.mp3'
 const KILL_AUDIO = 'audio/kill.mp3'
 
-var gGameWin = true
+var gGameWin = false
 
 var gSpeedAttackCount
 var gGroupAttack
@@ -38,7 +38,7 @@ var gBoard
 var gGame = {
   isOn: false,
   alienCount: 0,
-  score:0
+  score: 0,
 }
 
 var gBeansInterval
@@ -51,7 +51,7 @@ function onInit() {
   gGame.isOn = true
   gGame.alienCount = 0
   gSpeedAttackCount = 3
-  gGroupAttack = 2  
+  gGroupAttack = 2
 
   createAliens(gBoard)
   var elAlienAlive = document.querySelector('.aliens-counter')
@@ -85,9 +85,7 @@ function renderBoard(board) {
     strHtml += `<tr>`
     for (var j = 0; j < board[i].length; j++) {
       const currCell = board[i][j]
-      var cellData = getElCell({ i: i, j: j })
       var cellClass = ''
-      var cellContent = currCell.gameObject ? currCell.gameObject : ''
 
       if (currCell.type === SKY) cellClass += ' sky'
       if (currCell.type === WALL) cellClass += ' wall'
@@ -95,9 +93,7 @@ function renderBoard(board) {
       if (currCell.gameObject === ALIEN) cellClass += ' alien'
       if (currCell.gameObject === HERO) cellClass += ' hero'
 
-      strHtml += `<td class="cell cell-${i}-${j} ${cellClass}" data-i="${i}" data-j="${j}">
-      
-      `
+      strHtml += `<td class="cell cell-${i}-${j} ${cellClass}" data-i="${i}" data-j="${j}">`
 
       if (currCell.gameObject === HERO) {
         strHtml += HERO_IMG
@@ -105,7 +101,6 @@ function renderBoard(board) {
       if (currCell.gameObject === ALIEN) {
         strHtml += ALIEN_IMG
       }
-
       if (currCell.gameObject === LASER) {
         strHtml += LASER_IMG
       }
@@ -115,7 +110,6 @@ function renderBoard(board) {
       if (currCell.gameObject === SUPER_LAZER) {
         strHtml += SUPER_LAZER_IMG
       }
-
       if (currCell.gameObject === BEAN) {
         strHtml += BEAN_IMG
       }
@@ -147,10 +141,6 @@ function getElCell(pos) {
 }
 
 function gameOver(gGameWin) {
-
-  
-
-
   const elRestart = document.querySelector('.restart')
   elRestart.style.display = 'inline'
 
@@ -164,10 +154,11 @@ function gameOver(gGameWin) {
     var elAlienAlive = document.querySelector('.aliens-counter')
     elAlienAlive.innerText = 'YOU LOST'
   }
+
+  clearIntervals()
 }
 
 function onRestartGame() {
-  clearInterval(gIntervalAliens)
   onInit()
 }
 
@@ -199,8 +190,17 @@ function placeSpecialFood() {
   updateCell(poss[idx], BEAN)
 
   setTimeout(() => {
+    if (gBoard[poss[idx].i][poss[idx].j].gameObject === HERO) return
+
     gBoard[poss[idx].i][poss[idx].j].gameObject = null
     updateCell(poss[idx])
   }, 3000)
   renderBoard(gBoard)
+}
+
+function clearIntervals() {
+  var intervals = [gBeansInterval, gIntervalAliens]
+  for (var i = 0; i < intervals.length; i++) {
+    clearInterval(intervals[i])
+  }
 }
