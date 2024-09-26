@@ -46,6 +46,7 @@ function moveHero(dir) {
 }
 
 function onHandleKeyUp(event) {
+  console.log('event.key:',event.key)
   if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
     onKeyDown(event)
   } else if (event.code === 'Space') {
@@ -102,7 +103,7 @@ function speedAtack(eventKey) {
 
 function blinkLaser(pos, eventKey) {
   if (!gGame.isOn) return
-
+  forceEnd()
   var baseSpeed = LASER_SPEED
   var speedySpeed = LASER_SPEED / 3
   var wepeon
