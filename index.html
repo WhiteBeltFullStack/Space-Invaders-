@@ -9,7 +9,8 @@
   <body onload="onInit()" onkeyup="onHandleKeyUp(event)">
     <div class="container">
         <h1>Space Invaders</h1>
-        <div class="aliens-left">Aliens Left : <span class="aliens-counter">24</span></div>
+        <div class="aliens-left">Aliens Left : <span class="aliens-counter"></span></div>
+        <div class="aliens-left">SCORE : <span class="aliens-counter">0</span></div>
         <div class="instructions">INSTRUCTIONS:
             <p>---"Right and Left"--- Arrow to move around</p>
             
@@ -23,8 +24,8 @@
         <button class="restart" onclick="onRestartGame()">Restart - Game</button>
         
     </div>
+    <script src="javascript/game.js"></script>
         <script src="javascript/utils.js"></script>
-        <script src="javascript/game.js"></script>
         <script src="javascript/player.js"></script>
         <script src="javascript/aliens.js"></script>
   </body>

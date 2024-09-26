@@ -56,9 +56,19 @@ function moveAliensDown() {
             gBoard[newPos.i][newPos.j].gameObject === NEG_LASER ||
             gBoard[newPos.i][newPos.j].gameObject === SUPER_LAZER
           ) {
+            if (gBoard[newPos.i][newPos.j].gameObject === LASER) {
+              shotType = ' '
+            }
+            if (gBoard[newPos.i][newPos.j].gameObject === NEG_LASER) {
+              shotType = 'n'
+            }
+            if (gBoard[newPos.i][newPos.j].gameObject === SUPER_LAZER) {
+              shotType = 'x'
+            }
             gBoard[newPos.i][newPos.j].gameObject = null
             updateCell(newPos)
-            alientHit(i, j, newPos)
+            // alientHit(newPos.i, newPos.j, newPos, shotType)
+            continue
           } else {
             gBoard[newPos.i][newPos.j].gameObject = ALIEN
             updateCell(newPos, ALIEN)
@@ -73,8 +83,6 @@ function moveAliensDown() {
 }
 
 function moveAliensRight() {
-  //   for (var i = gBoard.length - 1; i >= 0; i--) {
-  //     for (var j = gBoard[i].length - 1; j >= 0; j--) {
   for (var j = gBoard.length - 1; j >= 0; j--) {
     for (var i = gBoard[j].length - 1; i >= 0; i--) {
       if (gBoard[i][j].gameObject === ALIEN) {
@@ -84,14 +92,25 @@ function moveAliensRight() {
           newPos.j < gBoard[i].length &&
           gBoard[newPos.i][newPos.j].type !== WALL
         ) {
+          var shotEngage
           if (
             gBoard[newPos.i][newPos.j].gameObject === LASER ||
             gBoard[newPos.i][newPos.j].gameObject === NEG_LASER ||
             gBoard[newPos.i][newPos.j].gameObject === SUPER_LAZER
           ) {
+            if (gBoard[newPos.i][newPos.j].gameObject === LASER) {
+              shotType = ' '
+            }
+            if (gBoard[newPos.i][newPos.j].gameObject === NEG_LASER) {
+              shotType = 'n'
+            }
+            if (gBoard[newPos.i][newPos.j].gameObject === SUPER_LAZER) {
+              shotType = 'x'
+            }
             gBoard[newPos.i][newPos.j].gameObject = null
             updateCell(newPos)
-            alientHit(i, j, newPos)
+            // alientHit(newPos.i, newPos.j, newPos, shotType)
+            continue
           }
           gBoard[i][j].gameObject = null
           updateCell(currPos)
@@ -109,8 +128,6 @@ function moveAliensRight() {
 }
 
 function moveAliensLeft() {
-  // for (var i = gBoard.length - 1; i >= 0; i--) {
-  //   for (var j = 0; j < gBoard[i].length; j++) {
   for (var j = 0; j < gBoard.length; j++) {
     for (var i = gBoard[j].length - 1; i >= 0; i--) {
       if (gBoard[i][j].gameObject === ALIEN) {
@@ -122,9 +139,19 @@ function moveAliensLeft() {
             gBoard[newPos.i][newPos.j].gameObject === NEG_LASER ||
             gBoard[newPos.i][newPos.j].gameObject === SUPER_LAZER
           ) {
+            if (gBoard[newPos.i][newPos.j].gameObject === LASER) {
+              shotType = ' '
+            }
+            if (gBoard[newPos.i][newPos.j].gameObject === NEG_LASER) {
+              shotType = 'n'
+            }
+            if (gBoard[newPos.i][newPos.j].gameObject === SUPER_LAZER) {
+              shotType = 'x'
+            }
             gBoard[newPos.i][newPos.j].gameObject = null
             updateCell(newPos)
-            alientHit(i, j, newPos)
+            // alientHit(newPos.i, newPos.j, newPos, shotType)
+            continue
           }
           gBoard[i][j].gameObject = null
           updateCell(currPos)

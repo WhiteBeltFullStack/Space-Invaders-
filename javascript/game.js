@@ -38,6 +38,7 @@ var gBoard
 var gGame = {
   isOn: false,
   alienCount: 0,
+  score:0
 }
 
 var gBeansInterval
@@ -50,7 +51,7 @@ function onInit() {
   gGame.isOn = true
   gGame.alienCount = 0
   gSpeedAttackCount = 3
-  gGroupAttack = 2
+  gGroupAttack = 2  
 
   createAliens(gBoard)
   var elAlienAlive = document.querySelector('.aliens-counter')
@@ -146,6 +147,10 @@ function getElCell(pos) {
 }
 
 function gameOver(gGameWin) {
+
+  
+
+
   const elRestart = document.querySelector('.restart')
   elRestart.style.display = 'inline'
 
@@ -193,9 +198,9 @@ function placeSpecialFood() {
 
   updateCell(poss[idx], BEAN)
 
-  //   setTimeout(() => {
-  //     gBoard[poss[idx].i][poss[idx].j].gameObject = null;
-  //     updateCell(poss[idx]);
-  // }, 5000);
+  setTimeout(() => {
+    gBoard[poss[idx].i][poss[idx].j].gameObject = null
+    updateCell(poss[idx])
+  }, 3000)
   renderBoard(gBoard)
 }

@@ -44,7 +44,6 @@ function onHandleKeyUp(event) {
   } else if (event.key === 'x') {
     speedAtack(event.key)
   }
-console.log('event.key:',event.key)
   return event.key
 }
 
