@@ -45,8 +45,13 @@ var gBeansInterval
 function onInit() {
   const elRestart = document.querySelector('.restart')
   elRestart.style.display = 'none'
+
+  const elScore = document.querySelector('.score')
+  elScore.innerText = '0'
   playSound(START_GAME_AUDIO, 0.1)
 
+  gGameWin = false
+  gHero.isShoot = false
   gBoard = createBoard()
   gGame.isOn = true
   gGame.alienCount = 0

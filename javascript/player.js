@@ -46,7 +46,6 @@ function moveHero(dir) {
 }
 
 function onHandleKeyUp(event) {
-  console.log('event.key:', event.key)
   if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
     onKeyDown(event)
   } else if (event.code === 'Space') {
@@ -100,7 +99,7 @@ function speedAtack(eventKey) {
   playSound(SUPER_LAZER_AUDIO, 0.1)
   blinkLaser(shootInitiatePos, eventKey)
 }
-
+  
 function blinkLaser(pos, eventKey) {
   if (!gGame.isOn) return
   forceEnd()
@@ -247,8 +246,8 @@ function forceEnd() {
   }
 
   if (counter === 0) {
-    console.log('counter:', counter)
     gGameWin = true
     gameOver(gGameWin)
+    
   }
 }
