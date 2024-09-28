@@ -1,34 +1,5 @@
 'use strict'
 
-const BOARD_SIZE = 15
-const ALIEN_ROW_LENGTH = 8
-const ALIEN_ROW_COUNT = 3
-
-const HERO = 'hero'
-const ALIEN = 'alien'
-const LASER = 'laser'
-const NEG_LASER = 'neg laser'
-const SUPER_LAZER = 'super laser'
-const BEAN = 'BEAN'
-
-const HERO_IMG = '<img src="imgs/hero.jpg"/>'
-const ALIEN_IMG = '<img src="imgs/alien.jpg"/>'
-const LASER_IMG = '<img src="imgs/laser.jpg"/>'
-const NEG_LASER_IMG = '<img src="imgs/neg-lazer.jpg"/>'
-const SUPER_LAZER_IMG = '<img src="imgs/super-lazer.jpg"/>'
-const BEAN_IMG = '<img src="imgs/senzu-bean.jpg"/>'
-
-const SKY = 'SKY'
-const WALL = 'WALL'
-
-const START_GAME_AUDIO = 'audio/start-game.mp3'
-
-const STEP_AUDIO = 'audio/step.mp3'
-const LAZER_AUDIO = 'audio/regular-shot.mp3'
-const LAZER_NEG_AUDIO = 'audio/neg-hit.mp3'
-const SUPER_LAZER_AUDIO = 'audio/speed-shot.mp3'
-const KILL_AUDIO = 'audio/kill.mp3'
-
 var gGameWin = false
 
 var gSpeedAttackCount
@@ -41,6 +12,11 @@ var gGame = {
   score: 0,
 }
 
+var shotCount = {
+  fastAttack: 3,
+  groupAttack: 2,
+}
+
 var gBeansInterval
 function onInit() {
   const elRestart = document.querySelector('.restart')
@@ -48,6 +24,14 @@ function onInit() {
 
   const elScore = document.querySelector('.score')
   elScore.innerText = '0'
+  gGame.score = 0
+
+  const elSpeedAttack = document.querySelector('.speedshot')
+  elSpeedAttack.innerText = `Speed shot left :${shotCount.fastAttack}`
+
+  const elNegAttack = document.querySelector('.negshot')
+  elNegAttack.innerText = `Big Blow Attack :${shotCount.groupAttack}`
+
   playSound(START_GAME_AUDIO, 0.1)
 
   gGameWin = false
@@ -55,8 +39,8 @@ function onInit() {
   gBoard = createBoard()
   gGame.isOn = true
   gGame.alienCount = 0
-  gSpeedAttackCount = 3
-  gGroupAttack = 2
+  gSpeedAttackCount = shotCount.fastAttack
+  gGroupAttack = shotCount.groupAttack
 
   createAliens(gBoard)
   var elAlienAlive = document.querySelector('.aliens-counter')
@@ -207,5 +191,37 @@ function clearIntervals() {
   var intervals = [gBeansInterval, gIntervalAliens]
   for (var i = 0; i < intervals.length; i++) {
     clearInterval(intervals[i])
+  }
+}
+var ALIEN_ROW_LENGTH = 8
+var ALIEN_ROW_COUNT = 3
+
+function difficulty(difficulty) {
+  if (difficulty === 'easy') {
+    ALIEN_ROW_LENGTH = 8
+    ALIEN_ROW_COUNT = 3
+    shotCount.fastAttack = 3
+    shotCount.groupAttack = 2
+
+    clearIntervals()
+    onInit()
+  }
+  if (difficulty === 'hard') {
+    ALIEN_ROW_LENGTH = 9
+    ALIEN_ROW_COUNT = 4
+    shotCount.fastAttack = 7
+    shotCount.groupAttack = 3
+
+    clearIntervals()
+    onInit()
+  }
+  if (difficulty === 'extreme') {
+    ALIEN_ROW_LENGTH = 9
+    ALIEN_ROW_COUNT = 5
+    shotCount.fastAttack = 10
+    shotCount.groupAttack = 3
+
+    clearIntervals()
+    onInit()
   }
 }

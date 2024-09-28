@@ -74,8 +74,12 @@ function onKeyDown(eventKey) {
 
 function clearAreaShot(eventKey) {
   if (gHero.isShoot) return
-  if (gGroupAttack === 0) return
-  gGroupAttack--
+  if (shotCount.groupAttack === 0) return
+  shotCount.groupAttack--
+
+  const elNegAttack = document.querySelector('.negshot')
+  elNegAttack.innerText = `Speed shot left :${shotCount.groupAttack}`
+
   gHero.isShoot = true
   var shootInitiatePos = { i: gHero.pos.i - 1, j: gHero.pos.j }
   playSound(LAZER_AUDIO, 0.1)
@@ -92,14 +96,18 @@ function onShoot(eventKey) {
 
 function speedAtack(eventKey) {
   if (gHero.isShoot) return
-  if (gSpeedAttackCount === 0) return
-  gSpeedAttackCount--
+  if (shotCount.fastAttack === 0) return
+  shotCount.fastAttack--
+
+  const elSpeedAttack = document.querySelector('.speedshot')
+  elSpeedAttack.innerText = `Speed shot left :${shotCount.fastAttack}`
+
   gHero.isShoot = true
   var shootInitiatePos = { i: gHero.pos.i - 1, j: gHero.pos.j }
   playSound(SUPER_LAZER_AUDIO, 0.1)
   blinkLaser(shootInitiatePos, eventKey)
 }
-  
+
 function blinkLaser(pos, eventKey) {
   if (!gGame.isOn) return
   forceEnd()
@@ -248,6 +256,5 @@ function forceEnd() {
   if (counter === 0) {
     gGameWin = true
     gameOver(gGameWin)
-    
   }
 }

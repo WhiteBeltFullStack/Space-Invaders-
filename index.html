@@ -7,26 +7,34 @@
     <link rel="stylesheet" href="css/style.css" />
   </head>
   <body onload="onInit()" onkeyup="onHandleKeyUp(event)">
+    <div class="stats">
+      stats
+      <p class="speedshot">Speed shot left :</p>
+      <p class="negshot">Big Blow Attack :</p>
+    </div>
+
+    <div class="difficulty">
+      <button class="easy" onclick="difficulty('easy',0,0)">Easy Mode</button>
+      <button class="hard" onclick="difficulty('hard',1,1)">Hard Mode</button>
+      <button class="extreme" onclick="difficulty('extreme',2,2)">
+        Extreme Mode
+      </button>
+    </div>
+    <a href="instructions.html">instructions</a>
     <div class="container">
-        <h1>Space Invaders</h1>
-        <div class="aliens-left">Aliens Left : <span class="aliens-counter"></span></div>
-        <div class="aliens-left">SCORE : <span class="score">0</span></div>
-        <div class="instructions">INSTRUCTIONS:
-            <p>---"Right and Left"--- Arrow to move around</p>
-            
-            <p>---Space-Bar---  Limittles Shooting</p>
-            <p>---X----  Ultra Speed Attack!--x3</p>
-            <p>---N---  Lets Blow everyone Around!--x2</p>
-        </div>
-        
-        <table class="board">
-        </table>
-        <button class="restart" onclick="onRestartGame()">Restart - Game</button>
-        
+      <h1>Space Invaders</h1>
+      <div class="aliens-left">
+        Aliens Left : <span class="aliens-counter"></span>
+      </div>
+      <div class="aliens-left">SCORE : <span class="score">0</span></div>
+
+      <table class="board"></table>
+      <button class="restart" onclick="onRestartGame()">Restart - Game</button>
     </div>
     <script src="javascript/game.js"></script>
-        <script src="javascript/utils.js"></script>
-        <script src="javascript/player.js"></script>
-        <script src="javascript/aliens.js"></script>
+    <script src="javascript/utils.js"></script>
+    <script src="javascript/player.js"></script>
+    <script src="javascript/aliens.js"></script>
+    <script src="javascript/const.js"></script>
   </body>
 </html>
